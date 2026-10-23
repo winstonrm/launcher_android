@@ -22,6 +22,7 @@ Uma alternativa moderna ao launcher padrão da sua Android TV, feita em Java e p
 - [Limitações conhecidas](#limitações-conhecidas)
 - [Testes e compatibilidade](#testes-e-compatibilidade)
   - [Preservar atalhos e dados ao atualizar](#preservar-atalhos-e-dados-ao-atualizar)
+- [Isenção de garantias e responsabilidade](#isenção-de-garantias-e-responsabilidade)
 - [Dados e privacidade](#dados-e-privacidade)
 - [Estrutura do projeto](#estrutura-do-projeto)
 - [Contribuindo](#contribuindo)
@@ -203,6 +204,12 @@ A versão-base foi instalada em uma TV TCL com Android TV; os atalhos do control
 ### Preservar atalhos e dados ao atualizar
 
 O mapeamento dos botões do controle fica no código `RemoteShortcutService.java`. Atualizações do app devem manter o mesmo pacote (`br.casa.sala`) e usar a mesma keystore/certificado, instalando com `./install-tv.sh --confirm-tv-install`. Esse fluxo atualiza o app sem desinstalá-lo e preserva os dados locais. Não desinstale o app nem limpe os dados se quiser manter perfis e preferências. Depois da instalação, confira `adb shell settings get secure enabled_accessibility_services`; se o Android desativar o serviço de atalhos, habilite-o novamente nas configurações da TV.
+
+## Isenção de garantias e responsabilidade
+
+O Launcher TV é fornecido **"no estado em que se encontra"**, para uso voluntário e sem garantia de funcionamento contínuo, disponibilidade, compatibilidade com todos os dispositivos ou adequação a uma finalidade específica. Na máxima extensão permitida pela legislação aplicável, os mantenedores não se responsabilizam por danos ao dispositivo, perda ou corrupção de dados, interrupção de serviços ou outros prejuízos decorrentes do uso ou da impossibilidade de uso do projeto.
+
+A instalação, configuração e utilização são por conta e risco do usuário. Cabe ao usuário verificar a compatibilidade com sua TV, revisar as permissões, proteger suas chaves e fazer backup dos dados antes de instalar ou atualizar. Integrações e informações dependem de serviços e aplicativos de terceiros e podem mudar, ficar indisponíveis ou apresentar dados incompletos; esses serviços não são controlados pelos mantenedores. Esta seção não limita direitos que não possam ser afastados pela legislação aplicável.
 
 ## Dados e privacidade
 

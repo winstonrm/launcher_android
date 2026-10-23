@@ -22,6 +22,7 @@ A modern alternative to the default Android TV launcher, written in Java and des
 - [Known limitations](#known-limitations)
 - [Testing and compatibility](#testing-and-compatibility)
   - [Preserve remote shortcuts and data when updating](#preserve-remote-shortcuts-and-data-when-updating)
+- [Disclaimer of warranties and liability](#disclaimer-of-warranties-and-liability)
 - [Data and privacy](#data-and-privacy)
 - [Project structure](#project-structure)
 - [Contributing](#contributing)
@@ -203,6 +204,12 @@ The base version was installed on a TCL Android TV; remote shortcuts were mapped
 ### Preserve remote shortcuts and data when updating
 
 Remote button mappings are in `RemoteShortcutService.java`. Updates should keep the same package (`br.casa.sala`) and use the same keystore/certificate, installing with `./install-tv.sh --confirm-tv-install`. This updates the app without uninstalling it and preserves local data. Do not uninstall the app or clear its data if you want to keep profiles and preferences. After installation, check `adb shell settings get secure enabled_accessibility_services`; if Android disables the shortcut service, enable it again in TV settings.
+
+## Disclaimer of warranties and liability
+
+Launcher TV is provided **"as is"**, for voluntary use, with no warranty of uninterrupted operation, availability, compatibility with every device, or fitness for a particular purpose. To the maximum extent permitted by applicable law, the maintainers are not liable for device damage, loss or corruption of data, service interruptions, or other harm arising from the use of, or inability to use, this project.
+
+Installation, configuration, and use are at the user's own risk. Users are responsible for checking TV compatibility, reviewing permissions, safeguarding their keys, and backing up data before installing or updating. Integrations and information depend on third-party services and apps; they may change, become unavailable, or provide incomplete data, and are outside the maintainers' control. This section does not limit rights that cannot be excluded under applicable law.
 
 ## Data and privacy
 
