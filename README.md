@@ -1,5 +1,7 @@
 # Launcher TV
 
+[English](README.en.md) | [Português](README.md)
+
 Uma alternativa moderna ao launcher padrão da sua Android TV, feita em Java e pensada para navegação por controle remoto. Reúne destaques de filmes e séries, aplicativos, histórico de reprodução por perfil, clima e cinema em uma interface para TV. Esta variante não inclui a seção de Canais nem integração com Home Assistant. Não usa Gradle: o build é um script que chama as ferramentas do Android SDK.
 
 ## Recursos
