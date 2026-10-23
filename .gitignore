@@ -1,0 +1,23 @@
+# Android / Gradle
+.gradle/
+**/build/
+local.properties
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+
+# Generated packages and signing material
+*.apk
+*.aab
+*.ap_
+*.jks
+*.keystore
+
+# Local secrets and environment files
+.env
+.env.*
+config.properties
+
+# macOS
+.DS_Store
