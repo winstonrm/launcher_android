@@ -4,6 +4,28 @@
 
 A modern alternative to the default Android TV launcher, written in Java and designed for remote control navigation. It brings together movie and TV show highlights, apps, per-profile playback history, weather, and cinema listings in a TV-friendly interface. This version does not include the Channels section or Home Assistant integration. It does not use Gradle: the build script calls Android SDK tools directly.
 
+## Contents
+
+- [Features](#features)
+- [Screenshots](#screenshots)
+  - [Home with TMDB configured](#home-with-tmdb-configured)
+  - [Home and profiles](#home-and-profiles)
+  - [First launch and location](#first-launch-and-location)
+- [Requirements](#requirements)
+- [External services and API keys](#external-services-and-api-keys)
+- [Configuration](#configuration)
+- [Build](#build)
+- [Prepare the TV and install](#prepare-the-tv-and-install)
+  - [Before connecting](#before-connecting)
+  - [Build and install](#build-and-install)
+  - [Permissions and first launch](#permissions-and-first-launch)
+- [Known limitations](#known-limitations)
+- [Testing and compatibility](#testing-and-compatibility)
+  - [Preserve remote shortcuts and data when updating](#preserve-remote-shortcuts-and-data-when-updating)
+- [Data and privacy](#data-and-privacy)
+- [Project structure](#project-structure)
+- [Contributing](#contributing)
+
 ## Features
 
 - **Home:** movie and TV show highlights, Continue Watching, frequently used apps, watchlist, seven-day weather forecast, movies in theaters, and cinema reminders.

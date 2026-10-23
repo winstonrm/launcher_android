@@ -4,6 +4,28 @@
 
 Uma alternativa moderna ao launcher padrão da sua Android TV, feita em Java e pensada para navegação por controle remoto. Reúne destaques de filmes e séries, aplicativos, histórico de reprodução por perfil, clima e cinema em uma interface para TV. Esta variante não inclui a seção de Canais nem integração com Home Assistant. Não usa Gradle: o build é um script que chama as ferramentas do Android SDK.
 
+## Índice
+
+- [Recursos](#recursos)
+- [Capturas de tela](#capturas-de-tela)
+  - [Home com TMDB configurado](#home-com-tmdb-configurado)
+  - [Tela inicial e perfis](#tela-inicial-e-perfis)
+  - [Primeira execução e localização](#primeira-execução-e-localização)
+- [Requisitos](#requisitos)
+- [Serviços externos e chaves](#serviços-externos-e-chaves)
+- [Configuração](#configuração)
+- [Compilar](#compilar)
+- [Preparar a TV e instalar](#preparar-a-tv-e-instalar)
+  - [Antes de conectar](#antes-de-conectar)
+  - [Compilar e instalar](#compilar-e-instalar)
+  - [Permissões e primeira abertura](#permissões-e-primeira-abertura)
+- [Limitações conhecidas](#limitações-conhecidas)
+- [Testes e compatibilidade](#testes-e-compatibilidade)
+  - [Preservar atalhos e dados ao atualizar](#preservar-atalhos-e-dados-ao-atualizar)
+- [Dados e privacidade](#dados-e-privacidade)
+- [Estrutura do projeto](#estrutura-do-projeto)
+- [Contribuindo](#contribuindo)
+
 ## Recursos
 
 - **Início:** destaques de filmes e séries, "Continue de onde parou", apps mais usados, Minha lista, clima dos próximos sete dias, filmes em cartaz e lembretes de cinema.
