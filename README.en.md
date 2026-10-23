@@ -46,27 +46,27 @@ These screenshots were captured on a TCL Android TV. Highlights and recommendati
 
 ### Home with TMDB configured
 
-![Home screen with TMDB highlights and recommendations](docs/images/home-tmdb-tcl.png)
+![Home screen with TMDB highlights and recommendations](images/home-tmdb-tcl.png)
 
 Captured on a TCL with a TMDB key enabled. The top navigation was cropped because this image came from the full launcher version; this public version does not include Channels or Home Assistant.
 
 ### Home and profiles
 
-![Launcher TV home screen on a TCL](docs/images/tela-inicial-tcl.png)
+![Launcher TV home screen on a TCL](images/tela-inicial-tcl.png)
 
-![Profile selector with the default User profile](docs/images/perfil-usuario-selecao.png)
+![Profile selector with the default User profile](images/perfil-usuario-selecao.png)
 
-![Editing the User profile with Kids mode disabled](docs/images/perfil-edicao-usuario.png)
+![Editing the User profile with Kids mode disabled](images/perfil-edicao-usuario.png)
 
-![Kids options, ages 3 to 17, and PIN enabled in the form](docs/images/perfil-kids-faixa-etaria-pin.png)
+![Kids options, ages 3 to 17, and PIN enabled in the form](images/perfil-kids-faixa-etaria-pin.png)
 
 ### First launch and location
 
 These screens show the Launcher TV explanation and Android's location permission request. They were captured without granting permission.
 
-![Launcher TV location explanation](docs/images/permissao-localizacao-explicacao.png)
+![Launcher TV location explanation](images/permissao-localizacao-explicacao.png)
 
-![Android TV location permission request](docs/images/permissao-localizacao-android.png)
+![Android TV location permission request](images/permissao-localizacao-android.png)
 
 ## Requirements
 
