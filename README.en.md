@@ -2,7 +2,7 @@
 
 [English](README.en.md) | [Português](README.md)
 
-A modern alternative to the default Android TV launcher, written in Java and designed for remote control navigation. It brings together movie and TV show highlights, apps, per-profile playback history, weather, and cinema listings in a TV-friendly interface. This version does not include the Channels section or Home Assistant integration. It does not use Gradle: the build script calls Android SDK tools directly.
+A modern alternative to the default Android TV launcher, developed in Java. It brings together movie and TV show highlights, apps, per-profile playback history, weather, and cinema listings. This version does not include the Channels section or Home Assistant integration. It does not use Gradle: the build script calls Android SDK tools directly.
 
 ## Contents
 
