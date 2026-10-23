@@ -21,7 +21,7 @@ A modern alternative to the default Android TV launcher, developed in Java. It b
   - [Permissions and first launch](#permissions-and-first-launch)
 - [Known limitations](#known-limitations)
 - [Testing and compatibility](#testing-and-compatibility)
-  - [Keep remote shortcuts and data when updating](#keep-remote-shortcuts-and-data-when-updating)
+  - [Update without losing data](#update-without-losing-data)
 - [Disclaimer of warranties and liability](#disclaimer-of-warranties-and-liability)
 - [Data and privacy](#data-and-privacy)
 - [Project structure](#project-structure)
@@ -201,9 +201,9 @@ The base version was installed on a TCL Android TV; remote shortcuts were mapped
 
 - When the TV is offline, the launcher continues to show the last cached content.
 
-### Keep remote shortcuts and data when updating
+### Update without losing data
 
-You can keep the project folder anywhere on your computer. For Android to recognize an APK as an update to the same app and preserve its data, keep the application ID (`br.casa.sala`) and sign the APK with the same certificate (the same keystore). Use `./install-tv.sh --confirm-tv-install` to back up and install the update without uninstalling the app. Do not uninstall the app or clear its data if you want to keep profiles and preferences. Remote button mappings are in `RemoteShortcutService.java`. After installation, check `adb shell settings get secure enabled_accessibility_services`; if Android disables the shortcut service, enable it again in TV settings.
+You can keep the project folder anywhere on your computer. The rule below matters only if Launcher TV is already installed and you want to update it without deleting profiles and preferences: Android requires the new version to use the same signing key as the installed version. The `./install-tv.sh --confirm-tv-install` script backs up the installed app before attempting the update. If the signing key is different, Android blocks the update; uninstalling the old version allows a fresh install but deletes local data. After an update, if remote shortcuts stop working, check that Launcher TV's accessibility service is still enabled in TV settings.
 
 ## Disclaimer of warranties and liability
 

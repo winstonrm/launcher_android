@@ -21,7 +21,7 @@ Uma alternativa moderna ao launcher padrão da sua Android TV, desenvolvida em J
   - [Permissões e primeira abertura](#permissões-e-primeira-abertura)
 - [Limitações conhecidas](#limitações-conhecidas)
 - [Testes e compatibilidade](#testes-e-compatibilidade)
-  - [Manter botões do controle e dados ao atualizar](#manter-botões-do-controle-e-dados-ao-atualizar)
+  - [Atualizar sem perder dados](#atualizar-sem-perder-dados)
 - [Isenção de garantias e responsabilidade](#isenção-de-garantias-e-responsabilidade)
 - [Dados e privacidade](#dados-e-privacidade)
 - [Estrutura do projeto](#estrutura-do-projeto)
@@ -201,9 +201,9 @@ A versão-base foi instalada em uma TV TCL com Android TV; os atalhos do control
 
 - Com a TV sem rede, o launcher continua mostrando o último conteúdo em cache.
 
-### Manter botões do controle e dados ao atualizar
+### Atualizar sem perder dados
 
-Você pode deixar a pasta do projeto em qualquer lugar do computador. Para o Android reconhecer o APK como atualização do mesmo app e preservar os dados, mantenha o identificador do aplicativo (`br.casa.sala`) e assine o APK com o mesmo certificado (a mesma keystore). Use `./install-tv.sh --confirm-tv-install` para fazer backup e instalar a atualização sem desinstalar o app. Não desinstale nem limpe os dados se quiser manter perfis e preferências. O mapeamento dos botões fica no código `RemoteShortcutService.java`. Depois da instalação, confira `adb shell settings get secure enabled_accessibility_services`; se o Android desativar o serviço de atalhos, habilite-o novamente nas configurações da TV.
+A pasta do projeto pode ficar em qualquer lugar do computador. A regra abaixo só importa se o Launcher TV já estiver instalado e você quiser atualizá-lo sem apagar perfis e preferências: o Android exige que a nova versão use a mesma assinatura da versão instalada. O script `./install-tv.sh --confirm-tv-install` faz um backup antes de tentar a atualização. Se a assinatura for diferente, o Android bloqueia a atualização; desinstalar a versão anterior permite instalar a nova, mas apaga os dados locais. Após atualizar, se os atalhos do controle pararem de funcionar, confira se o serviço de acessibilidade do Launcher TV continua habilitado nas configurações da TV.
 
 ## Isenção de garantias e responsabilidade
 
