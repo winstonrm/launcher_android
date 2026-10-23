@@ -1,23 +1,24 @@
-# Android / Gradle
+# Local credentials
+config.properties
+.env
+.env.*
+
+# Android build output and signing material
+out/
+build/
 .gradle/
-**/build/
 local.properties
-
-# Android Studio / IntelliJ
-.idea/
-*.iml
-
-# Generated packages and signing material
 *.apk
 *.aab
 *.ap_
-*.jks
+*.idsig
 *.keystore
+*.jks
 
-# Local secrets and environment files
-.env
-.env.*
-config.properties
+# Generated backups
+backups/
 
-# macOS
+# IDE and OS files
+.idea/
+*.iml
 .DS_Store
