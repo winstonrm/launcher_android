@@ -21,7 +21,7 @@ Uma alternativa moderna ao launcher padrão da sua Android TV, desenvolvida em J
   - [Permissões e primeira abertura](#permissões-e-primeira-abertura)
 - [Limitações conhecidas](#limitações-conhecidas)
 - [Testes e compatibilidade](#testes-e-compatibilidade)
-  - [Preservar atalhos e dados ao atualizar](#preservar-atalhos-e-dados-ao-atualizar)
+  - [Manter botões do controle e dados ao atualizar](#manter-botões-do-controle-e-dados-ao-atualizar)
 - [Isenção de garantias e responsabilidade](#isenção-de-garantias-e-responsabilidade)
 - [Dados e privacidade](#dados-e-privacidade)
 - [Estrutura do projeto](#estrutura-do-projeto)
@@ -201,9 +201,9 @@ A versão-base foi instalada em uma TV TCL com Android TV; os atalhos do control
 
 - Com a TV sem rede, o launcher continua mostrando o último conteúdo em cache.
 
-### Preservar atalhos e dados ao atualizar
+### Manter botões do controle e dados ao atualizar
 
-O mapeamento dos botões do controle fica no código `RemoteShortcutService.java`. Atualizações do app devem manter o mesmo pacote (`br.casa.sala`) e usar a mesma keystore/certificado, instalando com `./install-tv.sh --confirm-tv-install`. Esse fluxo atualiza o app sem desinstalá-lo e preserva os dados locais. Não desinstale o app nem limpe os dados se quiser manter perfis e preferências. Depois da instalação, confira `adb shell settings get secure enabled_accessibility_services`; se o Android desativar o serviço de atalhos, habilite-o novamente nas configurações da TV.
+Você pode deixar a pasta do projeto em qualquer lugar do computador. Para o Android reconhecer o APK como atualização do mesmo app e preservar os dados, mantenha o identificador do aplicativo (`br.casa.sala`) e assine o APK com o mesmo certificado (a mesma keystore). Use `./install-tv.sh --confirm-tv-install` para fazer backup e instalar a atualização sem desinstalar o app. Não desinstale nem limpe os dados se quiser manter perfis e preferências. O mapeamento dos botões fica no código `RemoteShortcutService.java`. Depois da instalação, confira `adb shell settings get secure enabled_accessibility_services`; se o Android desativar o serviço de atalhos, habilite-o novamente nas configurações da TV.
 
 ## Isenção de garantias e responsabilidade
 

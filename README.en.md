@@ -21,7 +21,7 @@ A modern alternative to the default Android TV launcher, developed in Java. It b
   - [Permissions and first launch](#permissions-and-first-launch)
 - [Known limitations](#known-limitations)
 - [Testing and compatibility](#testing-and-compatibility)
-  - [Preserve remote shortcuts and data when updating](#preserve-remote-shortcuts-and-data-when-updating)
+  - [Keep remote shortcuts and data when updating](#keep-remote-shortcuts-and-data-when-updating)
 - [Disclaimer of warranties and liability](#disclaimer-of-warranties-and-liability)
 - [Data and privacy](#data-and-privacy)
 - [Project structure](#project-structure)
@@ -201,9 +201,9 @@ The base version was installed on a TCL Android TV; remote shortcuts were mapped
 
 - When the TV is offline, the launcher continues to show the last cached content.
 
-### Preserve remote shortcuts and data when updating
+### Keep remote shortcuts and data when updating
 
-Remote button mappings are in `RemoteShortcutService.java`. Updates should keep the same package (`br.casa.sala`) and use the same keystore/certificate, installing with `./install-tv.sh --confirm-tv-install`. This updates the app without uninstalling it and preserves local data. Do not uninstall the app or clear its data if you want to keep profiles and preferences. After installation, check `adb shell settings get secure enabled_accessibility_services`; if Android disables the shortcut service, enable it again in TV settings.
+You can keep the project folder anywhere on your computer. For Android to recognize an APK as an update to the same app and preserve its data, keep the application ID (`br.casa.sala`) and sign the APK with the same certificate (the same keystore). Use `./install-tv.sh --confirm-tv-install` to back up and install the update without uninstalling the app. Do not uninstall the app or clear its data if you want to keep profiles and preferences. Remote button mappings are in `RemoteShortcutService.java`. After installation, check `adb shell settings get secure enabled_accessibility_services`; if Android disables the shortcut service, enable it again in TV settings.
 
 ## Disclaimer of warranties and liability
 
