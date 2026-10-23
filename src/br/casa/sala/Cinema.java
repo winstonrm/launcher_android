@@ -67,7 +67,7 @@ final class Cinema {
         String locationKey = locationKey(c);
         if (System.currentTimeMillis() - p.getLong("time", 0) < MAX_AGE && !old.isEmpty()
                 && locationKey.equals(p.getString("location", ""))) return old;
-        if (Weather.hasLocation(c) && !Config.CINEMA_TOKEN.isEmpty()) {
+        if (Weather.hasLocation(c)) {
             List<Movie> openCinema = loadOpenCinema(c);
             if (!openCinema.isEmpty()) {
                 saveMovies(c, openCinema);
@@ -110,8 +110,7 @@ final class Cinema {
         List<Movie> out = new ArrayList<>();
         try {
             String query = "?lat=" + Weather.latitude(c) + "&lon=" + Weather.longitude(c) + "&radius_km=50";
-            JSONObject response = new JSONObject(request("https://opencinemaproject.com/api/v1/public/screenings" + query,
-                    Config.CINEMA_TOKEN));
+            JSONObject response = new JSONObject(request("https://www.opencinemaproject.com/api/v1/public/screenings" + query));
             JSONArray screenings = response.optJSONArray("screenings");
             if (screenings == null) return out;
             Map<String, Movie> byFilm = new HashMap<>();
@@ -260,13 +259,9 @@ final class Cinema {
         } catch (Exception e) { android.util.Log.w("Sala", "Cache de sessões: " + e); }
     }
 
-    private static String request(String url) throws Exception { return request(url, ""); }
-
-    private static String request(String url, String bearerToken) throws Exception {
+    private static String request(String url) throws Exception {
         HttpURLConnection h = (HttpURLConnection) new URL(url).openConnection();
         h.setConnectTimeout(7000); h.setReadTimeout(9000); h.setRequestProperty("User-Agent", "LauncherTV/0.1 (Android TV)");
-        if (bearerToken != null && !bearerToken.isEmpty())
-            h.setRequestProperty("Authorization", "Bearer " + bearerToken);
         try (InputStream in = h.getInputStream(); ByteArrayOutputStream b = new ByteArrayOutputStream()) {
             byte[] buf = new byte[8192];
             for (int n; (n = in.read(buf)) > 0; ) b.write(buf, 0, n);

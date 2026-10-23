@@ -1189,12 +1189,8 @@ public class MainActivity extends Activity {
             });
             Weather.Forecast forecast = Weather.forecast(this);
             ui.post(() -> renderWeather(forecast));
-            if (!Config.CINEMA_TOKEN.isEmpty()) {
-                List<Cinema.Movie> theater = Cinema.load(this);
-                ui.post(() -> renderCinema(theater));
-            } else {
-                ui.post(() -> renderCinema(null));
-            }
+            List<Cinema.Movie> theater = Cinema.load(this);
+            ui.post(() -> renderCinema(theater));
             Set<String> installed = new HashSet<>();
             for (App a : list) installed.add(a.pkg);
             if (Tmdb.refresh(this, installed, recommendationAge())) ui.post(this::render);
@@ -1390,14 +1386,8 @@ public class MainActivity extends Activity {
 
     private void renderCinema(List<Cinema.Movie> movies) {
         if (cinemaRow == null) return;
-        int visibility = Config.CINEMA_TOKEN.isEmpty() ? View.GONE : View.VISIBLE;
-        if (cinemaLabel != null) cinemaLabel.setVisibility(visibility);
-        if (cinemaScroll != null) cinemaScroll.setVisibility(visibility);
-        if (visibility == View.GONE) {
-            cinemaMovies = new ArrayList<>();
-            cinemaRow.removeAllViews();
-            return;
-        }
+        if (cinemaLabel != null) cinemaLabel.setVisibility(View.VISIBLE);
+        if (cinemaScroll != null) cinemaScroll.setVisibility(View.VISIBLE);
         cinemaMovies = movies == null ? new ArrayList<>() : movies;
         if (cinemaLabel != null) cinemaLabel.setText(cinemaTitle());
         cinemaRow.removeAllViews();

@@ -19,6 +19,12 @@ Uma alternativa moderna ao launcher padrão da sua Android TV, feita em Java e p
 
 Capturas feitas em uma Android TV TCL após limpar os dados do Launcher TV. Os alertas mostram a explicação do app e a solicitação de localização do Android. Nenhuma permissão foi concedida durante a captura. A linha **Continuar** na tela inicial depende das sessões de mídia que os aplicativos instalados na TV publicam. As opções Kids e PIN nas imagens são uma demonstração temporária do formulário e não foram salvas no perfil da TV.
 
+### Home com TMDB configurado
+
+![Home com destaque e recomendações carregados pelo TMDB](docs/images/home-tmdb-tcl.png)
+
+Captura na TCL com a chave do TMDB ativa. A barra superior foi cortada porque a captura veio da versão completa do launcher; esta variante pública não inclui Canais nem Home Assistant.
+
 ![Tela inicial do Launcher TV em uma TCL](docs/images/tela-inicial-tcl.png)
 
 ![Seletor com o perfil padrão Usuário](docs/images/perfil-usuario-selecao.png)
@@ -50,24 +56,23 @@ O launcher consome APIs externas. Crie a chave de cada uma e coloque no arquivo 
 |---|---|---|---|
 | TMDB | Destaques, filmes, séries, imagens e classificação indicativa | Obrigatória para Filmes, Séries e recomendações | Crie uma conta gratuita em <https://www.themoviedb.org> e gere a chave em **Configurações → API** (<https://www.themoviedb.org/settings/api>). Use a *API Key (v3)* |
 | Open-Meteo | Previsão do tempo | Não precisa | <https://open-meteo.com> |
-| Open Cinema Project | Sessões próximas, horários, cinemas e links de ingresso | Obrigatório (`cinema_token`) | Gere uma chave gratuita em <https://opencinema.app/developers>; cobertura varia por cidade |
+| Open Cinema Project | Sessões próximas, horários, cinemas e links de ingresso | Fonte pública | Consulta por localização; cobertura varia por cidade |
 | Ingresso.com | Complemento opcional da busca de sessões e ingressos | Código de parceria opcional (`ingresso_partner`) | Requer parceria fornecida pela Ingresso.com |
 
 Este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB.
 
 ## Configuração
 
-Para uma experiência mais completa, recomenda-se cadastrar suas próprias chaves do TMDB e do Open Cinema Project. Elas habilitam filmes, séries, recomendações e a seção Cinema. Crie `config.properties` na raiz do projeto e informe as chaves:
+Para uma experiência mais completa, recomenda-se cadastrar uma chave do TMDB. Ela habilita Filmes, Séries, recomendações e fornece dados de filmes em cartaz quando não há sessões disponíveis. Crie `config.properties` na raiz do projeto:
 
 ```properties
 tmdb_key=SUA_CHAVE_DA_API_TMDB
-cinema_token=SEU_TOKEN_DO_OPEN_CINEMA_PROJECT
 ingresso_partner=
 ```
 
-Sem `tmdb_key`, as abas Filmes e Séries ficam ocultas, as recomendações não são carregadas e o app remove o cache antigo do TMDB para não exibir conteúdo de uma instalação anterior. Sem `cinema_token`, a seção Cinema fica oculta e o app não consulta fontes de sessões de cinema. Com o token, o app consulta o Open Cinema Project; se essa fonte não retornar sessões e `ingresso_partner` estiver configurado, pode tentar a fonte opcional Ingresso.com. O TMDB fornece dados e imagens dos filmes. O `ingresso_partner` só deve ser preenchido com um código de parceria válido. `config.properties` está no `.gitignore`. Se o arquivo não existir, o build prossegue sem essas integrações e não cria chaves vazias.
+Sem `tmdb_key`, as abas Filmes e Séries ficam ocultas, as recomendações não são carregadas e o app remove o cache antigo do TMDB para não exibir conteúdo de uma instalação anterior. A seção Cinema continua disponível: consulta as sessões públicas do Open Cinema Project quando há localização e, se não houver sessões, usa o TMDB para listar filmes em cartaz quando a chave está configurada. A cobertura do Open Cinema Project varia por cidade. `ingresso_partner` é opcional e só deve ser preenchido com um código de parceria válido da Ingresso.com. `config.properties` está no `.gitignore`. Se o arquivo não existir, o build prossegue sem a integração do TMDB e não cria chaves vazias.
 
-> **Atenção:** TMDB e Open Cinema Project tokens são incorporados ao APK durante a compilação e podem ser extraídos do aplicativo. Não publique nem compartilhe APKs compilados com chaves pessoais. Cada pessoa deve criar suas próprias credenciais e compilar seu próprio APK.
+> **Atenção:** a chave do TMDB é incorporada ao APK durante a compilação e pode ser extraída do aplicativo. Não publique nem compartilhe APKs compilados com uma chave pessoal. Cada pessoa deve criar sua própria chave e compilar seu próprio APK.
 
 ## Compilar
 
@@ -155,12 +160,17 @@ Esses comandos confirmam instalação e estado do sistema; não substituem um te
 
 A atualização normal preserva os dados privados do app quando o certificado é o mesmo. Desinstalar remove esses dados. Nunca use `am force-stop br.casa.sala`: isso pode desativar o serviço de acessibilidade dos atalhos até que ele seja reativado nas configurações.
 
+## Limitações conhecidas
+
+- **Netflix — “Continue de onde parou”:** a retomada ainda é inconsistente. A Netflix pode informar apenas que o app está em reprodução, sem título, imagem ou endereço direto do conteúdo. Nesses casos, o cartão pode ser genérico e o clique pode abrir a Netflix sem retomar o título ou o ponto exato. O launcher não consegue recuperar dados que o serviço não expõe pelas interfaces do Android.
+- **Outros apps de streaming:** título, imagem, progresso e destino de retomada variam conforme o que cada app publica; alguns cartões abrem apenas o app.
+- **Cinema:** o Open Cinema Project pode não ter sessões na cidade, e redes comerciais podem não aparecer.
+
 ## Testes e compatibilidade
 
 A versão-base deste Launcher TV foi usada e testada em uma TV TCL com Android TV; os atalhos do controle foram mapeados para esse fabricante. Esta variante pública sem Canais e Home Assistant foi compilada e instalada em uma TCL em 23/10/2026. Depois de limpar os dados do app, foram capturadas a tela inicial, os pedidos de localização e as opções de perfil. A faixa etária de 3 a 17 anos foi corrigida e instalada; a validação funcional completa com o controle ainda depende do usuário. Para atualizar um Launcher TV já instalado, o APK precisa ser assinado com o mesmo certificado. Se a assinatura não corresponder, o Android bloqueia a atualização; desinstalar apaga perfis e histórico. Em outras marcas, os códigos das teclas de aplicativos podem ser diferentes e os atalhos podem não funcionar.
 
 - "Continue de onde parou" mostra apenas o que cada app informa ao Android (título, imagem, posição e destino). Alguns serviços omitem parte disso, e a retomada pode abrir só o app.
-- Sessões integradas dependem de um token válido do Open Cinema Project e da cobertura por cidade; cinemas de redes comerciais podem não aparecer.
 - Com a TV sem rede, o launcher continua mostrando o último conteúdo em cache.
 
 ## Dados e privacidade

@@ -16,14 +16,12 @@ AJ="$(ls -d "$SDK"/platforms/android-*/android.jar | sort -V | tail -1)"
 rm -rf out && mkdir -p out/classes out/gen/br/casa/sala
 # config.properties is optional; missing keys disable their integrations.
 KEY="$( (grep -E '^tmdb_key=' config.properties 2>/dev/null || true) | tail -1 | cut -d= -f2- | tr -d ' "\\\r' || true)"
-CINEMA_TOKEN="$( (grep -E '^cinema_token=' config.properties 2>/dev/null || true) | tail -1 | cut -d= -f2- | tr -cd 'A-Za-z0-9._-' || true)"
 INGRESSO_PARTNER="$( (grep -E '^ingresso_partner=' config.properties 2>/dev/null || true) | tail -1 | cut -d= -f2- | tr -cd 'A-Za-z0-9_-' || true)"
 cat > out/gen/br/casa/sala/Config.java <<CFG
 package br.casa.sala;
 final class Config {
     private Config() {}
     static final String TMDB_KEY = "$KEY";
-    static final String CINEMA_TOKEN = "$CINEMA_TOKEN";
     static final String INGRESSO_PARTNER = "$INGRESSO_PARTNER";
 }
 CFG
