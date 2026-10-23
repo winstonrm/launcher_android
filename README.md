@@ -17,13 +17,15 @@ Uma alternativa moderna ao launcher padrão da sua Android TV, feita em Java e p
 
 ## Capturas de tela
 
-Capturas feitas em uma Android TV TCL após limpar os dados do Launcher TV. Os alertas mostram a explicação do app e a solicitação de localização do Android. Nenhuma permissão foi concedida durante a captura. A linha **Continuar** na tela inicial depende das sessões de mídia que os aplicativos instalados na TV publicam. As opções Kids e PIN nas imagens são uma demonstração temporária do formulário e não foram salvas no perfil da TV.
+As imagens abaixo foram capturadas em uma Android TV TCL. Destaques e recomendações variam conforme o cache e os serviços configurados. As opções Kids e PIN exibidas no formulário são uma demonstração; não foram salvas no perfil da TV.
 
 ### Home com TMDB configurado
 
 ![Home com destaque e recomendações carregados pelo TMDB](docs/images/home-tmdb-tcl.png)
 
 Captura na TCL com a chave do TMDB ativa. A barra superior foi cortada porque a captura veio da versão completa do launcher; esta variante pública não inclui Canais nem Home Assistant.
+
+### Tela inicial e perfis
 
 ![Tela inicial do Launcher TV em uma TCL](docs/images/tela-inicial-tcl.png)
 
@@ -34,6 +36,8 @@ Captura na TCL com a chave do TMDB ativa. A barra superior foi cortada porque a 
 ![Opções Kids, idades de 3 a 17 anos e PIN ligado no formulário](docs/images/perfil-kids-faixa-etaria-pin.png)
 
 ### Primeira execução e localização
+
+Estas telas mostram a explicação do Launcher TV e a solicitação de localização do Android. Foram capturadas sem conceder a permissão.
 
 ![Explicação de localização exibida pelo Launcher TV](docs/images/permissao-localizacao-explicacao.png)
 
@@ -50,14 +54,13 @@ O `build.sh` usa as ferramentas mais recentes encontradas no SDK. Defina `ANDROI
 
 ## Serviços externos e chaves
 
-O launcher consome APIs externas. Crie a chave de cada uma e coloque no arquivo `config.properties`, na pasta do projeto (veja a próxima seção).
+O launcher usa os serviços abaixo. Apenas o TMDB exige uma chave de API para os recursos de filmes e séries.
 
 | Serviço | Para que serve | Chave | Onde criar |
 |---|---|---|---|
 | TMDB | Destaques, filmes, séries, imagens e classificação indicativa | Obrigatória para Filmes, Séries e recomendações | Crie uma conta gratuita em <https://www.themoviedb.org> e gere a chave em **Configurações → API** (<https://www.themoviedb.org/settings/api>). Use a *API Key (v3)* |
 | Open-Meteo | Previsão do tempo | Não precisa | <https://open-meteo.com> |
 | Open Cinema Project | Sessões próximas, horários, cinemas e links de ingresso | Fonte pública | Consulta por localização; cobertura varia por cidade |
-| Ingresso.com | Complemento opcional da busca de sessões e ingressos | Código de parceria opcional (`ingresso_partner`) | Requer parceria fornecida pela Ingresso.com |
 
 Este produto usa a API do TMDB, mas não é endossado nem certificado pelo TMDB.
 
@@ -67,10 +70,9 @@ Para uma experiência mais completa, recomenda-se cadastrar uma chave do TMDB. E
 
 ```properties
 tmdb_key=SUA_CHAVE_DA_API_TMDB
-ingresso_partner=
 ```
 
-Sem `tmdb_key`, as abas Filmes e Séries ficam ocultas, as recomendações não são carregadas e o app remove o cache antigo do TMDB para não exibir conteúdo de uma instalação anterior. A seção Cinema continua disponível: consulta as sessões públicas do Open Cinema Project quando há localização e, se não houver sessões, usa o TMDB para listar filmes em cartaz quando a chave está configurada. A cobertura do Open Cinema Project varia por cidade. `ingresso_partner` é opcional e só deve ser preenchido com um código de parceria válido da Ingresso.com. `config.properties` está no `.gitignore`. Se o arquivo não existir, o build prossegue sem a integração do TMDB e não cria chaves vazias.
+Sem `tmdb_key`, as abas Filmes e Séries ficam ocultas, as recomendações não são carregadas e o app remove o cache antigo do TMDB para não exibir conteúdo de uma instalação anterior. A seção Cinema continua disponível: consulta as sessões públicas do Open Cinema Project quando há localização e, se não houver sessões, usa o TMDB para listar filmes em cartaz quando a chave está configurada. A cobertura do Open Cinema Project varia por cidade. Não é necessário configurar parceria com a Ingresso.com. `config.properties` está no `.gitignore`. Se o arquivo não existir, o build prossegue sem a integração do TMDB e não cria chaves vazias.
 
 > **Atenção:** a chave do TMDB é incorporada ao APK durante a compilação e pode ser extraída do aplicativo. Não publique nem compartilhe APKs compilados com uma chave pessoal. Cada pessoa deve criar sua própria chave e compilar seu próprio APK.
 
@@ -110,7 +112,7 @@ Use o endereço IP exibido nas configurações de rede da própria TV. Se estive
 
 ### Compilar e instalar
 
-Depois de configurar `config.properties`, compile no computador:
+Se quiser os recursos do TMDB, configure `config.properties` antes de compilar. Sem a chave, o build também funciona:
 
 ```sh
 ./build.sh
@@ -131,10 +133,12 @@ Para atualizar uma instalação existente feita com o mesmo certificado de assin
 
 O script verifica a conexão, salva o APK instalado e os metadados em `backups/tv/<data-hora>/` e só então executa `adb install -r LauncherTV.apk`. Se não conseguir criar o backup, cancela a instalação. Não use `adb install -r` manualmente para contornar essa proteção. APKs com assinaturas diferentes não podem atualizar um pacote existente; desinstalar primeiro apaga perfis, histórico e preferências locais.
 
-Se a TV já tiver o pacote `br.casa.sala` assinado com outra keystore (por exemplo, uma versão anterior do Launcher TV), compile com a chave original para atualizar sem apagar os dados. `build.sh` aceita `SIGNING_KEYSTORE`, `SIGNING_KEY_ALIAS`, `SIGNING_STORE_PASS` e `SIGNING_KEY_PASS`; por exemplo:
+Se a TV já tiver o pacote `br.casa.sala` assinado com outra keystore (por exemplo, uma versão anterior do Launcher TV), compile com a chave original para atualizar sem apagar os dados. `build.sh` aceita `SIGNING_KEYSTORE`, `SIGNING_KEY_ALIAS`, `SIGNING_STORE_PASS` e `SIGNING_KEY_PASS`. Quando executado em um terminal, solicita a senha sem gravá-la no projeto; para selecionar outra keystore:
 
 ```sh
-SIGNING_KEYSTORE=/caminho/para/sua-keystore.jks SIGNING_KEY_ALIAS=sala SIGNING_STORE_PASS='senha-da-keystore' SIGNING_KEY_PASS='senha-da-chave' ./build.sh
+export SIGNING_KEYSTORE=/caminho/para/sua-keystore.jks
+export SIGNING_KEY_ALIAS=sala
+./build.sh
 ```
 
 Sem a chave da instalação existente, o Android bloqueia a atualização; desinstalar permite uma instalação nova, mas apaga os dados locais.
@@ -168,10 +172,13 @@ A atualização normal preserva os dados privados do app quando o certificado é
 
 ## Testes e compatibilidade
 
-A versão-base deste Launcher TV foi usada e testada em uma TV TCL com Android TV; os atalhos do controle foram mapeados para esse fabricante. Esta variante pública sem Canais e Home Assistant foi compilada e instalada em uma TCL em 23/10/2026. Depois de limpar os dados do app, foram capturadas a tela inicial, os pedidos de localização e as opções de perfil. A faixa etária de 3 a 17 anos foi corrigida e instalada; a validação funcional completa com o controle ainda depende do usuário. Para atualizar um Launcher TV já instalado, o APK precisa ser assinado com o mesmo certificado. Se a assinatura não corresponder, o Android bloqueia a atualização; desinstalar apaga perfis e histórico. Em outras marcas, os códigos das teclas de aplicativos podem ser diferentes e os atalhos podem não funcionar.
+A versão-base foi instalada em uma TV TCL com Android TV; os atalhos do controle foram mapeados para esse fabricante. A variante pública sem Canais e Home Assistant também foi compilada e instalada em uma TCL em 23/10/2026. Foram conferidas visualmente a tela inicial, as solicitações de localização e as opções de perfil. A navegação completa com o controle ainda precisa ser validada pelo usuário. Em outras marcas, os códigos das teclas podem ser diferentes e os atalhos podem não funcionar.
 
-- "Continue de onde parou" mostra apenas o que cada app informa ao Android (título, imagem, posição e destino). Alguns serviços omitem parte disso, e a retomada pode abrir só o app.
 - Com a TV sem rede, o launcher continua mostrando o último conteúdo em cache.
+
+### Preservar atalhos e dados ao atualizar
+
+O mapeamento dos botões do controle fica no código `RemoteShortcutService.java`. Atualizações do app devem manter o mesmo pacote (`br.casa.sala`) e usar a mesma keystore/certificado, instalando com `./install-tv.sh --confirm-tv-install`. Esse fluxo atualiza o app sem desinstalá-lo e preserva os dados locais. Não desinstale o app nem limpe os dados se quiser manter perfis e preferências. Depois da instalação, confira `adb shell settings get secure enabled_accessibility_services`; se o Android desativar o serviço de atalhos, habilite-o novamente nas configurações da TV.
 
 ## Dados e privacidade
 
