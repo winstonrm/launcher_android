@@ -42,31 +42,31 @@ A modern alternative to the default Android TV launcher, developed in Java. It b
 
 ## Screenshots
 
-These screenshots were captured on a TCL Android TV. Highlights and recommendations depend on cache contents and configured services. The Kids and PIN options shown in the form are a demonstration and were not saved to the TV profile.
+These English-localized images are based on screenshots captured on a TCL Android TV. Highlights and recommendations depend on cache contents and configured services. The Kids and PIN options shown in the form are a demonstration and were not saved to the TV profile.
 
 ### Home with TMDB configured
 
-![Home screen with TMDB highlights and recommendations](images/home-tmdb-tcl.png)
+![Home screen with TMDB highlights and recommendations](images/home-tmdb-tcl-en.png)
 
 Captured on a TCL with a TMDB key enabled. The top navigation was cropped because this image came from the full launcher version; this public version does not include Channels or Home Assistant.
 
 ### Home and profiles
 
-![Launcher TV home screen on a TCL](images/tela-inicial-tcl.png)
+![Launcher TV home screen on a TCL](images/tela-inicial-tcl-en.png)
 
-![Profile selector with the default User profile](images/perfil-usuario-selecao.png)
+![Profile selector with the default User profile](images/perfil-usuario-selecao-en.png)
 
-![Editing the User profile with Kids mode disabled](images/perfil-edicao-usuario.png)
+![Editing the User profile with Kids mode disabled](images/perfil-edicao-usuario-en.png)
 
-![Kids options, ages 3 to 17, and PIN enabled in the form](images/perfil-kids-faixa-etaria-pin.png)
+![Kids options, ages 3 to 17, and PIN enabled in the form](images/perfil-kids-faixa-etaria-pin-en.png)
 
 ### First launch and location
 
 These screens show the Launcher TV explanation and Android's location permission request. They were captured without granting permission.
 
-![Launcher TV location explanation](images/permissao-localizacao-explicacao.png)
+![Launcher TV location explanation](images/permissao-localizacao-explicacao-en.png)
 
-![Android TV location permission request](images/permissao-localizacao-android.png)
+![Android TV location permission request](images/permissao-localizacao-android-en.png)
 
 ## Requirements
 
