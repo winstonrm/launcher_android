@@ -32,7 +32,7 @@ final class Search {
         List<Title> out = new ArrayList<>();
         if (!Tmdb.enabled()) return out;
         try {
-            JSONArray r = Tmdb.get("/search/multi?language=pt-BR&region=BR&include_adult=false&query="
+            JSONArray r = Tmdb.get("/search/multi?language=" + L10n.language(c) + "&region=BR&include_adult=false&query="
                     + URLEncoder.encode(q, "UTF-8")).getJSONArray("results");
             File dir = new File(c.getCacheDir(), "busca");
             dir.mkdirs();

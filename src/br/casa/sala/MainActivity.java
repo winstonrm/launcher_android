@@ -853,7 +853,7 @@ public class MainActivity extends Activity {
         searchPage.setClipChildren(false);
         searchBox = new android.widget.EditText(this);
         searchBox.setSingleLine(true);
-        searchBox.setHint("Buscar");
+        searchBox.setHint(L10n.tr(this, "Buscar"));
         searchBox.setHintTextColor(DIM);
         searchBox.setTextColor(WHITE);
         searchBox.setTextSize(15);
@@ -969,7 +969,7 @@ public class MainActivity extends Activity {
 
     private TextView text(String t, int sp, boolean medium) {
         TextView v = new TextView(this);
-        v.setText(t);
+        v.setText(L10n.tr(this, t));
         float scale = prefs == null ? 1f : prefs.getFloat("textScale", 1f);
         v.setTextSize(sp * scale);
         v.setSingleLine(true);
@@ -1116,13 +1116,13 @@ public class MainActivity extends Activity {
     }
 
     private void setHeroText(App app, String provider, String title, String meta, String overview) {
-        heroProvider.setText(provider);
+        heroProvider.setText(L10n.tr(this, provider));
         Drawable logo = app == null ? null : (app.banner != null ? app.banner : app.icon);
         heroLogo.setImageDrawable(logo);
         heroLogo.setVisibility(logo == null ? View.GONE : View.VISIBLE);
         heroTitle.setText(title);
-        heroMeta.setText(meta);
-        heroOverview.setText(overview);
+        heroMeta.setText(L10n.tr(this, meta));
+        heroOverview.setText(L10n.tr(this, overview));
         heroOverview.setVisibility(overview == null || overview.isEmpty() ? View.GONE : View.VISIBLE);
         heroInfo.setAlpha(0.4f);
         heroInfo.animate().alpha(1f).setDuration(300).start();
@@ -1133,7 +1133,7 @@ public class MainActivity extends Activity {
         setHeroImage("p|" + p.backdrop, decode(p.backdrop));
         StringBuilder meta = new StringBuilder(p.kind);
         if (p.year != null && !p.year.isEmpty()) meta.append("  ·  ").append(p.year);
-        if (p.vote > 0) meta.append("  ·  ★ ").append(String.format(new Locale("pt", "BR"), "%.1f", p.vote));
+        if (p.vote > 0) meta.append("  ·  ★ ").append(String.format(Locale.forLanguageTag(L10n.language(this)), "%.1f", p.vote));
         setHeroText(a, a != null ? a.label : p.provider, p.title, meta.toString(), p.overview);
         int idx = heroPicks.indexOf(p);
         if (idx >= 0) heroIndex = idx;
@@ -1199,7 +1199,7 @@ public class MainActivity extends Activity {
 
     private void renderWeather(Weather.Forecast f) {
         if (weather == null || weatherRow == null) return;
-        weather.setText(f == null ? "☁  Local" : Weather.icon(f.currentCode, f.day) + "  " + Math.round(f.currentTemp) + "°");
+        weather.setText(f == null ? "☁  " + L10n.tr(this, "Local") : Weather.icon(f.currentCode, f.day) + "  " + Math.round(f.currentTemp) + "°");
         weatherRow.removeAllViews();
         FrameLayout card = new FrameLayout(this);
         weatherCard = card;
@@ -1222,7 +1222,7 @@ public class MainActivity extends Activity {
         LinearLayout currentInfo = new LinearLayout(this);
         currentInfo.setOrientation(LinearLayout.VERTICAL);
         currentInfo.setGravity(Gravity.CENTER_VERTICAL);
-        TextView place = text(weatherLocationLabel().toUpperCase(new Locale("pt", "BR")), 10, true);
+        TextView place = text(weatherLocationLabel().toUpperCase(Locale.forLanguageTag(L10n.language(this))), 10, true);
         place.setTextColor(0xFFC6D8F2);
         place.setMaxLines(1);
         place.setEllipsize(TextUtils.TruncateAt.END);
@@ -1262,7 +1262,7 @@ public class MainActivity extends Activity {
         org.json.JSONArray highs = f == null ? new org.json.JSONArray() : jsonArray(f.dailyData, "temperature_2m_max");
         org.json.JSONArray lows = f == null ? new org.json.JSONArray() : jsonArray(f.dailyData, "temperature_2m_min");
         java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        java.text.SimpleDateFormat weekdayFormat = new java.text.SimpleDateFormat("EEE", new Locale("pt", "BR"));
+        java.text.SimpleDateFormat weekdayFormat = new java.text.SimpleDateFormat("EEE", Locale.forLanguageTag(L10n.language(this)));
         for (int i = 0; i < Math.min(7, days.length()); i++) {
             LinearLayout day = new LinearLayout(this);
             day.setOrientation(LinearLayout.VERTICAL);
@@ -1270,7 +1270,7 @@ public class MainActivity extends Activity {
             String weekday = days.optString(i, "");
             try { weekday = weekdayFormat.format(dateFormat.parse(weekday)); }
             catch (Exception ignored) { if (weekday.length() > 5) weekday = weekday.substring(5); }
-            TextView name = text(i == 0 ? "HOJE" : weekday.replace(".", "").toUpperCase(new Locale("pt", "BR")), 9, true);
+            TextView name = text(i == 0 ? "HOJE" : weekday.replace(".", "").toUpperCase(Locale.forLanguageTag(L10n.language(this))), 9, true);
             name.setTextColor(0xFFC6D8F2);
             name.setMaxLines(1);
             name.setGravity(Gravity.CENTER);
@@ -1295,9 +1295,9 @@ public class MainActivity extends Activity {
         View focusAnchor = new View(this);
         focusAnchor.setFocusable(true);
         focusAnchor.setClickable(true);
-        focusAnchor.setContentDescription(f == null ? "Clima. Toque para configurar a localização." : "Clima em "
-                + weatherLocationLabel() + ". " + Weather.description(f.currentCode) + ", " + Math.round(f.currentTemp)
-                + " graus. Toque para ver a previsão detalhada.");
+        focusAnchor.setContentDescription(f == null ? L10n.tr(this, "Clima. Toque para configurar a localização.") : L10n.tr(this, "Clima em ")
+                + weatherLocationLabel() + ". " + L10n.tr(this, Weather.description(f.currentCode)) + ", " + Math.round(f.currentTemp)
+                + L10n.tr(this, " graus. Toque para ver a previsão detalhada."));
         focusAnchor.setOnClickListener(v -> {
             if (f == null) weatherMenu(); else showWeatherDetail(f);
         });
@@ -1427,7 +1427,7 @@ public class MainActivity extends Activity {
         content.addView(title, lp(0, px(7), 0, 0));
         String cinemaMeta = movie.screenings.isEmpty()
                 ? (movie.release == null || movie.release.length() < 4 ? "Em cartaz" : "Em cartaz · " + movie.release.substring(0, 4))
-                : movie.screenings.size() + " sessões próximas · segure OK para horários";
+                : movie.screenings.size() + L10n.tr(this, " sessões próximas · segure OK para horários");
         TextView year = text(cinemaMeta, 12, false);
         year.setTextColor(SOFT); content.addView(year, lp(0, px(3), 0, 0));
         content.setFocusable(true); content.setClickable(true);
@@ -1437,8 +1437,8 @@ public class MainActivity extends Activity {
             else showCinemaSessions(movie);
             return true;
         });
-        content.setContentDescription(movie.title + ". Toque para pesquisar no YouTube."
-                + (movie.screenings.isEmpty() ? " Segure OK para criar lembrete." : " Segure OK para ver sessões e criar lembrete."));
+        content.setContentDescription(L10n.tr(this, movie.title + ". Toque para pesquisar no YouTube."
+                + (movie.screenings.isEmpty() ? " Segure OK para criar lembrete." : " Segure OK para ver sessões e criar lembrete.")));
         focusFx(content, card, 1.06f, null);
         return content;
     }
@@ -1477,7 +1477,7 @@ public class MainActivity extends Activity {
         if (value == null || value.isEmpty()) return "Horário não informado";
         try {
             long millis = java.time.Instant.parse(value).toEpochMilli();
-            return new java.text.SimpleDateFormat("EEE d MMM · HH:mm", new Locale("pt", "BR")).format(new java.util.Date(millis));
+            return new java.text.SimpleDateFormat("EEE d MMM · HH:mm", Locale.forLanguageTag(L10n.language(this))).format(new java.util.Date(millis));
         } catch (Exception ignored) { return value; }
     }
 
@@ -1489,7 +1489,7 @@ public class MainActivity extends Activity {
                 java.util.Calendar at = java.util.Calendar.getInstance();
                 at.set(year, month, day, hour, minute, 0); at.set(java.util.Calendar.MILLISECOND, 0);
                 if (at.getTimeInMillis() <= System.currentTimeMillis()) {
-                    new AlertDialog.Builder(this).setMessage("Escolha um horário futuro.").setPositiveButton("OK", null).show();
+                    dialog().setMessage("Escolha um horário futuro.").setPositiveButton("OK", null).show();
                     return;
                 }
                 Cinema.addReminder(this, movie.title, at.getTimeInMillis());
@@ -1506,7 +1506,7 @@ public class MainActivity extends Activity {
         int shown = 0;
         for (Cinema.Reminder reminder : reminders) {
             if (shown++ >= 8) break;
-            String date = new java.text.SimpleDateFormat("EEE d MMM · HH:mm", new Locale("pt", "BR")).format(new java.util.Date(reminder.at));
+            String date = new java.text.SimpleDateFormat("EEE d MMM · HH:mm", Locale.forLanguageTag(L10n.language(this))).format(new java.util.Date(reminder.at));
             TextView card = text("◷  " + reminder.title + " · " + date + (reminder.notified ? " · avisado" : ""), 14, true);
             card.setTextColor(WHITE); card.setFocusable(true); card.setClickable(true);
             card.setPadding(px(16), px(12), px(16), px(12));
@@ -1550,7 +1550,7 @@ public class MainActivity extends Activity {
     private void askLocationIfNeeded() {
         if (Weather.hasLocation(this) || getSharedPreferences("tempo", MODE_PRIVATE).getBoolean("asked", false)) return;
         getSharedPreferences("tempo", MODE_PRIVATE).edit().putBoolean("asked", true).apply();
-        new AlertDialog.Builder(this).setTitle("Clima e cinema perto de você")
+        dialog().setTitle("Clima e cinema perto de você")
                 .setMessage("Permita a localização para mostrar a previsão local e encontrar cinemas próximos. A localização fica neste aparelho. Você também pode informar uma cidade manualmente.")
                 .setPositiveButton("Permitir localização", (d, w) -> requestPermissions(
                         new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST))
@@ -1570,7 +1570,7 @@ public class MainActivity extends Activity {
     private void startVoiceSearch() {
         Intent voice = new Intent("android.speech.action.RECOGNIZE_SPEECH")
                 .putExtra("android.speech.extra.LANGUAGE_MODEL", "free_form")
-                .putExtra("android.speech.extra.LANGUAGE", "pt-BR")
+                .putExtra("android.speech.extra.LANGUAGE", L10n.language(this))
                 .putExtra("android.speech.extra.PROMPT", "O que você quer assistir?");
         if (voice.resolveActivity(getPackageManager()) == null) {
             hint("A pesquisa por voz não está disponível nesta TV.");
@@ -1606,7 +1606,7 @@ public class MainActivity extends Activity {
                 }
             } catch (Exception e) { android.util.Log.w("Sala", "Localização indisponível: " + e); }
             if (best == null) {
-                ui.post(() -> new AlertDialog.Builder(this).setTitle("Localização indisponível")
+                ui.post(() -> dialog().setTitle("Localização indisponível")
                         .setMessage("A TV não forneceu uma posição atual. Informe sua cidade para configurar o clima e a busca de cinemas.")
                         .setPositiveButton("Informar cidade", (d, w) -> enterCity()).setNegativeButton("Depois", null).show());
                 return;
@@ -1620,8 +1620,8 @@ public class MainActivity extends Activity {
 
     private void enterCity() {
         android.widget.EditText input = new android.widget.EditText(this);
-        input.setSingleLine(true); input.setHint("Cidade, estado ou CEP");
-        new AlertDialog.Builder(this).setTitle("Sua cidade").setView(input)
+        input.setSingleLine(true); input.setHint(L10n.tr(this, "Cidade, estado ou CEP"));
+        dialog().setTitle("Sua cidade").setView(input)
                 .setPositiveButton("Buscar", (d, w) -> setCity(input.getText().toString()))
                 .setNegativeButton("Cancelar", null).show();
     }
@@ -1629,7 +1629,7 @@ public class MainActivity extends Activity {
     private void setCity(String city) {
         if (city == null || city.trim().isEmpty()) return;
         bg.execute(() -> {
-            org.json.JSONObject place = Weather.findPlace(city);
+            org.json.JSONObject place = Weather.findPlace(this, city);
             if (place == null) { ui.post(() -> hint("Não encontrei essa cidade. Tente informar cidade e estado.")); return; }
             String name = place.optString("name", city);
             String admin = place.optString("admin1", "");
@@ -1662,20 +1662,23 @@ public class MainActivity extends Activity {
     private void showWeatherDetail(Weather.Forecast f) {
         if (f == null) { weatherMenu(); return; }
         StringBuilder msg = new StringBuilder();
-        msg.append(Weather.description(f.currentCode)).append(" · ").append(Math.round(f.currentTemp)).append("°\n")
-                .append("Umidade ").append(f.humidity).append("% · Vento ").append(Math.round(f.wind)).append(" km/h · UV ").append(String.format(Locale.getDefault(), "%.1f", f.uv));
+        msg.append(L10n.tr(this, Weather.description(f.currentCode))).append(" · ").append(Math.round(f.currentTemp)).append("°\n")
+                .append(L10n.tr(this, "Umidade ")).append(f.humidity).append("% · ").append(L10n.tr(this, "Vento ")).append(Math.round(f.wind)).append(" km/h · UV ").append(String.format(Locale.forLanguageTag(L10n.language(this)), "%.1f", f.uv));
         org.json.JSONArray times = f.daily, codes = jsonArray(f.dailyData, "weather_code"), highs = jsonArray(f.dailyData, "temperature_2m_max"),
                 lows = jsonArray(f.dailyData, "temperature_2m_min"), rain = jsonArray(f.dailyData, "precipitation_probability_max"),
                 amount = jsonArray(f.dailyData, "precipitation_sum");
-        msg.append("\n\nPróximos dias");
+        msg.append("\n\n").append(L10n.tr(this, "Próximos dias"));
         for (int i = 0; i < Math.min(7, times.length()); i++) {
             String date = times.optString(i, "");
-            if (date.length() >= 10) date = date.substring(8, 10) + "/" + date.substring(5, 7);
+            if (date.length() >= 10) {
+                if (L10n.isEnglish(this)) date = date.substring(5, 7) + "/" + date.substring(8, 10);
+                else date = date.substring(8, 10) + "/" + date.substring(5, 7);
+            }
             msg.append("\n").append(date).append("  ").append(Weather.icon(codes.optInt(i), true)).append("  ")
                     .append(Math.round(lows.optDouble(i))).append("° / ").append(Math.round(highs.optDouble(i))).append("°")
-                    .append(" · chuva ").append(rain.optInt(i)).append("% (").append(String.format(Locale.getDefault(), "%.1f", amount.optDouble(i))).append(" mm)");
+                    .append(L10n.tr(this, " · chuva ")).append(rain.optInt(i)).append("% (").append(String.format(Locale.forLanguageTag(L10n.language(this)), "%.1f", amount.optDouble(i))).append(" mm)");
         }
-        msg.append("\n\nPróximas horas");
+        msg.append("\n\n").append(L10n.tr(this, "Próximas horas"));
         org.json.JSONArray hourTimes = jsonArray(f.hourlyData, "time"), temps = jsonArray(f.hourlyData, "temperature_2m"),
                 probs = jsonArray(f.hourlyData, "precipitation_probability"), hourCodes = jsonArray(f.hourlyData, "weather_code");
         int first = 0;
@@ -1685,9 +1688,9 @@ public class MainActivity extends Activity {
             String hour = hourTimes.optString(i);
             if (hour.length() >= 16) hour = hour.substring(11, 16);
             msg.append("\n").append(hour).append("  ").append(Weather.icon(hourCodes.optInt(i), true)).append("  ")
-                    .append(Math.round(temps.optDouble(i))).append("° · chuva ").append(probs.optInt(i)).append("%");
+                    .append(Math.round(temps.optDouble(i))).append("° · ").append(L10n.tr(this, "chuva ")).append(probs.optInt(i)).append("%");
         }
-        new AlertDialog.Builder(this).setTitle("Clima · " + (f.place == null ? "" : f.place)).setMessage(msg.toString())
+        dialog().setTitle("Clima · " + (f.place == null ? "" : f.place)).setMessage(msg.toString())
                 .setPositiveButton("Alterar localização", (d, w) -> weatherMenu())
                 .setNegativeButton("Fechar", null).show();
     }
@@ -1931,7 +1934,7 @@ public class MainActivity extends Activity {
             iv.setImageDrawable(play);
             in.addView(iv, new LinearLayout.LayoutParams(px(26), px(26)));
         }
-        TextView l = text("Loja", 15, true);
+        TextView l = text(L10n.tr(this, "Loja"), 15, true);
         l.setTextColor(WHITE);
         in.addView(l, lp(px(8), 0, 0, 0));
         t.addView(in, new FrameLayout.LayoutParams(-1, -1));
@@ -1983,7 +1986,7 @@ public class MainActivity extends Activity {
             for (App a : sortedApps()) cards.add(appCard(a, cellWidth, cellHeight, true));
         } else {
             perLine = 4;
-            String kind = page == MOVIES ? "Filme" : "Série";
+            String kind = L10n.tr(this, page == MOVIES ? "Filme" : "Série");
             int visibleCount = page == MOVIES ? movieVisibleCount : seriesVisibleCount;
             int matchingCount = 0;
             for (Tmdb.Pick p : picks) {
@@ -2100,7 +2103,7 @@ public class MainActivity extends Activity {
         icon.setGravity(Gravity.CENTER);
         tile.addView(icon, new FrameLayout.LayoutParams(-1, -1));
         col.addView(tile, new LinearLayout.LayoutParams(px(width), px(height)));
-        TextView name = text("Gerenciar apps", width < 140 ? 11 : 13, true);
+        TextView name = text(L10n.tr(this, "Gerenciar apps"), width < 140 ? 11 : 13, true);
         name.setTextColor(SOFT);
         name.setMaxWidth(px(width));
         name.setEllipsize(TextUtils.TruncateAt.END);
@@ -2238,7 +2241,7 @@ public class MainActivity extends Activity {
         col.setId(View.generateViewId());
         col.setTag(R_KEY, "appvis:" + a.pkg);
         if (rowIndex == 0 && appManagerBack != null) col.setNextFocusUpId(appManagerBack.getId());
-        col.setContentDescription(a.label + (visible ? ", visível. Toque para ocultar." : ", oculto. Toque para mostrar."));
+        col.setContentDescription(L10n.tr(this, a.label + (visible ? ", visível. Toque para ocultar." : ", oculto. Toque para mostrar.")));
         col.setOnKeyListener((v, code, e) -> {
             if (e.getAction() == KeyEvent.ACTION_DOWN && code == KeyEvent.KEYCODE_DPAD_UP
                     && rowIndex == 0 && appManagerBack != null) {
@@ -2399,7 +2402,7 @@ public class MainActivity extends Activity {
         ((LinearLayout.LayoutParams) title.getLayoutParams()).setMargins(px(5), 0, 0, 0);
         if (showEqualizer) {
             EqualizerIndicator equalizer = new EqualizerIndicator(this);
-            equalizer.setContentDescription("Reproduzindo agora");
+            equalizer.setContentDescription(L10n.tr(this, "Reproduzindo agora"));
             LinearLayout.LayoutParams eqp = new LinearLayout.LayoutParams(px(14), px(14));
             eqp.setMargins(px(6), 0, 0, 0);
             foot.addView(equalizer, eqp);
@@ -2629,7 +2632,7 @@ public class MainActivity extends Activity {
     }
 
     private void fillHistory(App a) {
-        histLabel.setText("Assistido no " + a.label);
+        histLabel.setText(L10n.tr(this, "Assistido no ") + a.label);
         histRow.removeAllViews();
         List<History.Item> items = History.get(this, a.pkg);
         if (items.isEmpty()) {
@@ -2909,7 +2912,7 @@ public class MainActivity extends Activity {
 
     private void menu() {
         if (kidsAge() > 0) {
-            showSheet(profile.name, null, null, new String[]{"Trocar perfil"}, w -> pickProfile());
+            showSheet(L10n.profileName(this, profile.name), null, null, new String[]{"Trocar perfil"}, w -> pickProfile());
             return;
         }
         int hiddenCount = 0;
@@ -2983,6 +2986,21 @@ public class MainActivity extends Activity {
     }
 
     // ------------------------------------------------------------------ sheet (the launcher's own menu)
+
+    private AlertDialog.Builder dialog() {
+        return new AlertDialog.Builder(this) {
+            @Override public AlertDialog.Builder setTitle(CharSequence title) { return super.setTitle(L10n.tr(MainActivity.this, title == null ? null : title.toString())); }
+            @Override public AlertDialog.Builder setMessage(CharSequence message) { return super.setMessage(L10n.tr(MainActivity.this, message == null ? null : message.toString())); }
+            @Override public AlertDialog.Builder setPositiveButton(CharSequence text, android.content.DialogInterface.OnClickListener listener) { return super.setPositiveButton(L10n.tr(MainActivity.this, text.toString()), listener); }
+            @Override public AlertDialog.Builder setNegativeButton(CharSequence text, android.content.DialogInterface.OnClickListener listener) { return super.setNegativeButton(L10n.tr(MainActivity.this, text.toString()), listener); }
+            @Override public AlertDialog.Builder setNeutralButton(CharSequence text, android.content.DialogInterface.OnClickListener listener) { return super.setNeutralButton(L10n.tr(MainActivity.this, text.toString()), listener); }
+            @Override public AlertDialog.Builder setItems(CharSequence[] items, android.content.DialogInterface.OnClickListener listener) {
+                CharSequence[] translated = new CharSequence[items.length];
+                for (int i = 0; i < items.length; i++) translated[i] = L10n.tr(MainActivity.this, items[i].toString());
+                return super.setItems(translated, listener);
+            }
+        };
+    }
 
     private void showSheet(String title, Drawable icon, String message, String[] items, java.util.function.IntConsumer onPick) {
         closeSheet(false);
@@ -3182,12 +3200,12 @@ public class MainActivity extends Activity {
                 where.append(where.length() > 0 ? " · " : "").append(a.label);
             }
         }
-        TextView w = text(where.length() > 0 ? where.toString() : t.kind + (t.year.isEmpty() ? "" : " · " + t.year) + " · app não instalado", 12, false);
+        TextView w = text(where.length() > 0 ? where.toString() : L10n.tr(this, t.kind) + (t.year.isEmpty() ? "" : " · " + t.year) + " · app não instalado", 12, false);
         w.setTextColor(where.length() > 0 ? 0xFF8FD18F : DIM);
         w.setMaxWidth(px(208));
         w.setEllipsize(TextUtils.TruncateAt.END);
         col.addView(w, lp(px(2), px(4), 0, 0));
-        col.setContentDescription(t.name + (Watchlist.contains(this, t.name, t.kind) ? ", na minha lista. Segure OK para remover." : ", segure OK para salvar na minha lista."));
+        col.setContentDescription(L10n.tr(this, t.name + (Watchlist.contains(this, t.name, t.kind) ? ", na minha lista. Segure OK para remover." : ", segure OK para salvar na minha lista.")));
         col.setOnLongClickListener(v -> {
             boolean saved = !Watchlist.contains(this, t.name, t.kind);
             Watchlist.toggle(this, t);
@@ -3340,7 +3358,7 @@ public class MainActivity extends Activity {
         row.setGravity(Gravity.CENTER_HORIZONTAL);
         View first = null;
         for (Profiles.Profile p : Profiles.all(this)) {
-            View item = avatarItem(Profiles.avatar(p.avatar, px(220)), p.name + (p.kids ? "  ·  Kids" : ""), 110,
+            View item = avatarItem(Profiles.avatar(p.avatar, px(220)), L10n.profileName(this, p.name) + (p.kids ? "  ·  Kids" : ""), 110,
                     () -> switchTo(p), () -> editProfile(p, false));
             row.addView(item, lp(px(22), 0, px(22), 0));
             if (profile != null && p.id.equals(profile.id)) first = item;
@@ -3386,8 +3404,8 @@ public class MainActivity extends Activity {
     private void askProfilePin(Profiles.Profile locked, Runnable onSuccess) {
         android.widget.EditText input = new android.widget.EditText(this);
         input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD);
-        input.setSingleLine(true); input.setHint("PIN do perfil");
-        new AlertDialog.Builder(this).setTitle("Perfil protegido · " + locked.name).setView(input)
+        input.setSingleLine(true); input.setHint(L10n.tr(this, "PIN do perfil"));
+        dialog().setTitle("Perfil protegido · " + L10n.profileName(this, locked.name)).setView(input)
                 .setPositiveButton("Continuar", (d, w) -> {
                     if (Profiles.verifyPin(locked, input.getText().toString())) onSuccess.run();
                     else hint("PIN incorreto.");
@@ -3401,8 +3419,8 @@ public class MainActivity extends Activity {
             field.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_VARIATION_PASSWORD);
             field.setSingleLine(true); box.addView(field);
         }
-        first.setHint("Crie um PIN com 4 ou mais números"); second.setHint("Confirme o PIN");
-        new AlertDialog.Builder(this).setTitle("Proteja o perfil Kids").setMessage("Defina um PIN para sair do perfil e alterar suas restrições.")
+        first.setHint(L10n.tr(this, "Crie um PIN com 4 ou mais números")); second.setHint(L10n.tr(this, "Confirme o PIN"));
+        dialog().setTitle("Proteja o perfil Kids").setMessage("Defina um PIN para sair do perfil e alterar suas restrições.")
                 .setView(box).setPositiveButton("Salvar PIN", (d, w) -> {
                     String a = first.getText().toString(), b = second.getText().toString();
                     if (a.length() < 4 || !a.equals(b)) { hint("Os PINs precisam ter 4 ou mais números e ser iguais."); return; }
@@ -3460,8 +3478,8 @@ public class MainActivity extends Activity {
         top.addView(big, new LinearLayout.LayoutParams(px(90), px(90)));
         android.widget.EditText name = new android.widget.EditText(this);
         name.setSingleLine(true);
-        name.setText(p.name);
-        name.setHint("Nome");
+        name.setText(L10n.profileName(this, p.name));
+        name.setHint(L10n.tr(this, "Nome"));
         name.setHintTextColor(DIM);
         name.setTextColor(WHITE);
         name.setTextSize(18);
@@ -3513,10 +3531,10 @@ public class MainActivity extends Activity {
         TextView pinLabel = label("Exigir PIN ao entrar em Kids");
         pinLine.addView(pinLabel, new LinearLayout.LayoutParams(0, -2, 1f));
         android.widget.Switch pinToggle = new android.widget.Switch(this);
-        pinToggle.setTextOn("Sim");
-        pinToggle.setTextOff("Não");
+        pinToggle.setTextOn(L10n.tr(this, "Sim"));
+        pinToggle.setTextOff(L10n.tr(this, "Não"));
         pinToggle.setChecked(p.pinRequired);
-        pinToggle.setContentDescription("Exigir cadastro de PIN ao entrar neste perfil Kids");
+        pinToggle.setContentDescription(L10n.tr(this, "Exigir cadastro de PIN ao entrar neste perfil Kids"));
         pinLine.addView(pinToggle, lp(0, 0, 0, 0));
         controlsCard.addView(pinLine, lp(0, 0, 0, px(10)));
         TextView pinHelp = text("Desligado por padrão. Ligado: o PIN será cadastrado na primeira entrada e protegerá a saída e as restrições.", 14, false);
@@ -3594,7 +3612,7 @@ public class MainActivity extends Activity {
         save.setOnClickListener(v -> {
             String n = name.getText().toString().trim();
             if (n.isEmpty()) {
-                name.setHint("Digite um nome");
+                name.setHint(L10n.tr(this, "Digite um nome"));
                 name.requestFocus();
                 return;
             }

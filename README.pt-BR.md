@@ -4,6 +4,9 @@
 
 Uma alternativa moderna ao launcher padrão da sua Android TV, desenvolvida em Java. Reúne destaques de filmes e séries, aplicativos, histórico de reprodução por perfil, clima e cinema. Esta variante não inclui a seção de Canais nem integração com Home Assistant. Não usa Gradle: o build é um script que chama as ferramentas do Android SDK.
 
+
+A interface acompanha o idioma do dispositivo: em inglês, o app exibe textos em inglês; nos demais idiomas, usa português do Brasil. As consultas de filmes e séries acompanham o idioma selecionado.
+
 ## Índice
 
 - [Recursos](#recursos)

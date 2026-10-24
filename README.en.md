@@ -4,6 +4,9 @@
 
 A modern alternative to the default Android TV launcher, developed in Java. It brings together movie and TV show highlights, apps, per-profile playback history, weather, and cinema listings. This version does not include the Channels section or Home Assistant integration. It does not use Gradle: the build script calls Android SDK tools directly.
 
+
+The interface follows the device language: English system locales display English, and other locales display Brazilian Portuguese. Movie and TV metadata requests follow the selected interface language.
+
 ## Contents
 
 - [Features](#features)

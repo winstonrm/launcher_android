@@ -43,7 +43,7 @@ final class Cinema {
     static List<Movie> cached(Context c) {
         List<Movie> out = new ArrayList<>();
         try {
-            JSONArray a = new JSONObject(prefs(c).getString("movies", "[]")).getJSONArray("items");
+            JSONArray a = new JSONObject(prefs(c).getString("movies_" + (L10n.isEnglish(c) ? "en" : "pt"), "[]")).getJSONArray("items");
             for (int i = 0; i < a.length(); i++) {
                 JSONObject o = a.getJSONObject(i);
                 Movie m = new Movie(); m.id = o.optInt("id"); m.title = o.optString("title");
@@ -83,7 +83,7 @@ final class Cinema {
         }
         if (!Tmdb.enabled()) return old;
         try {
-            JSONArray results = Tmdb.get("/movie/now_playing?language=pt-BR&region=BR&page=1").getJSONArray("results");
+            JSONArray results = Tmdb.get("/movie/now_playing?language=" + L10n.language(c) + "&region=BR&page=1").getJSONArray("results");
             JSONArray saved = new JSONArray(); List<Movie> out = new ArrayList<>();
             File dir = new File(c.getFilesDir(), "cinema"); dir.mkdirs();
             for (int i = 0; i < results.length() && out.size() < 20; i++) {
@@ -99,7 +99,7 @@ final class Cinema {
                 saved.put(new JSONObject().put("id", m.id).put("title", m.title).put("overview", m.overview)
                         .put("release", m.release).put("vote", m.vote).put("image", m.image));
             }
-            if (!out.isEmpty()) { p.edit().putString("movies", new JSONObject().put("items", saved).toString())
+            if (!out.isEmpty()) { p.edit().putString("movies_" + (L10n.isEnglish(c) ? "en" : "pt"), new JSONObject().put("items", saved).toString())
                     .putLong("time", System.currentTimeMillis()).apply(); return out; }
         } catch (Exception e) { android.util.Log.w("Sala", "Cinema: " + e); }
         return old;
@@ -152,7 +152,7 @@ final class Cinema {
         File image = new File(dir, Integer.toHexString(id) + ".jpg");
         if (image.exists()) return image.getPath();
         try {
-            JSONObject result = Tmdb.get("/search/movie?language=pt-BR&query=" + URLEncoder.encode(title, "UTF-8"));
+            JSONObject result = Tmdb.get("/search/movie?language=" + L10n.language(c) + "&query=" + URLEncoder.encode(title, "UTF-8"));
             JSONArray items = result.optJSONArray("results");
             if (items == null || items.length() == 0) return "";
             String path = items.getJSONObject(0).optString("backdrop_path", "");
@@ -254,7 +254,7 @@ final class Cinema {
                 a.put(new JSONObject().put("id", movie.id).put("title", movie.title).put("overview", movie.overview)
                         .put("release", movie.release).put("vote", movie.vote).put("image", movie.image).put("screenings", sessions));
             }
-            prefs(c).edit().putString("movies", new JSONObject().put("items", a).toString())
+            prefs(c).edit().putString("movies_" + (L10n.isEnglish(c) ? "en" : "pt"), new JSONObject().put("items", a).toString())
                     .putLong("time", System.currentTimeMillis()).putString("location", locationKey(c)).apply();
         } catch (Exception e) { android.util.Log.w("Sala", "Cache de sessões: " + e); }
     }

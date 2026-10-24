@@ -101,7 +101,7 @@ final class Profiles {
         if (all.isEmpty()) {
             Profile initial = new Profile();
             initial.id = "p1";
-            initial.name = "Usuário";
+            initial.name = L10n.tr(c, "Usuário");
             initial.avatar = 0;
             initial.kids = false;
             initial.pinRequired = false;

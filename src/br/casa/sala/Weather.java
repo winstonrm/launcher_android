@@ -93,11 +93,11 @@ final class Weather {
     }
 
     /** Geocodes a user-entered city; never guesses a default location. Call off the main thread. */
-    static JSONObject findPlace(String query) {
+    static JSONObject findPlace(Context c, String query) {
         try {
             String q = URLEncoder.encode(query.trim(), "UTF-8");
             JSONObject root = new JSONObject(request("https://geocoding-api.open-meteo.com/v1/search?name=" + q
-                    + "&count=1&language=pt&countryCode=BR&format=json"));
+                    + "&count=1&language=" + (L10n.isEnglish(c) ? "en" : "pt") + "&countryCode=BR&format=json"));
             JSONArray results = root.optJSONArray("results");
             return results == null || results.length() == 0 ? null : results.getJSONObject(0);
         } catch (Exception e) { return null; }

@@ -73,7 +73,7 @@ final class Tmdb {
             return out;
         }
         try {
-            JSONArray a = new JSONObject(read(new File(c.getFilesDir(), cacheName(age)))).getJSONArray("picks");
+            JSONArray a = new JSONObject(read(new File(c.getFilesDir(), cacheName(c, age)))).getJSONArray("picks");
             for (int i = 0; i < a.length(); i++) {
                 JSONObject o = a.getJSONObject(i);
                 Pick p = new Pick();
@@ -102,15 +102,16 @@ final class Tmdb {
         File[] files = c.getFilesDir().listFiles();
         if (files != null) for (File f : files) {
             String name = f.getName();
-            if (name.equals(CACHE) || name.startsWith("tmdb6_k") || name.startsWith("tmdb_")) f.delete();
+            if (name.startsWith("tmdb6") || name.startsWith("tmdb_")) f.delete();
         }
         c.getSharedPreferences("tmdb", Context.MODE_PRIVATE).edit().clear().apply();
     }
 
     /** Refreshes the cache if it is old. Returns true when new picks were saved. Call off the main thread. */
     /** Kids profiles get their own selection, filtered by the Brazilian age rating. */
-    private static String cacheName(int age) {
-        return age > 0 ? CACHE.replace(".json", "_k" + age + ".json") : CACHE;
+    private static String cacheName(Context c, int age) {
+        String suffix = age > 0 ? "_k" + age : "";
+        return CACHE.replace(".json", suffix + "_" + (L10n.isEnglish(c) ? "en" : "pt") + ".json");
     }
 
     private static String kidsFilter(String kind, int age) {
@@ -138,14 +139,14 @@ final class Tmdb {
 
     static boolean refresh(Context c, Set<String> installed, int age) {
         if (!enabled()) return false;
-        File cache = new File(c.getFilesDir(), cacheName(age));
+        File cache = new File(c.getFilesDir(), cacheName(c, age));
         // Refresh every few hours, and right away when a streaming app is installed or removed.
         String apps = coveredApps(installed);
-        boolean sameApps = apps.equals(c.getSharedPreferences("tmdb", Context.MODE_PRIVATE).getString("apps" + age, ""));
+        boolean sameApps = apps.equals(c.getSharedPreferences("tmdb", Context.MODE_PRIVATE).getString("apps" + age + (L10n.isEnglish(c) ? "_en" : "_pt"), ""));
         if (cache.exists() && sameApps && System.currentTimeMillis() - cache.lastModified() < MAX_AGE) return false;
         try {
             Map<Integer, String[]> providers = new HashMap<>(); // id -> {pkg, name}
-            JSONArray list = get("/watch/providers/tv?watch_region=BR&language=pt-BR").getJSONArray("results");
+            JSONArray list = get("/watch/providers/tv?watch_region=BR&language=" + L10n.language(c)).getJSONArray("results");
             for (int i = 0; i < list.length(); i++) {
                 JSONObject o = list.getJSONObject(i);
                 String name = o.getString("provider_name");
@@ -162,7 +163,7 @@ final class Tmdb {
             for (Map.Entry<Integer, String[]> e : providers.entrySet()) {
                 List<Pick> mine = new ArrayList<>();
                 for (String kind : new String[]{"tv", "movie"}) {
-                    JSONArray r = get("/discover/" + kind + "?watch_region=BR&language=pt-BR&sort_by=popularity.desc"
+                    JSONArray r = get("/discover/" + kind + "?watch_region=BR&language=" + L10n.language(c) + "&sort_by=popularity.desc"
                             + "&with_watch_monetization_types=flatrate&with_watch_providers=" + e.getKey() + kidsFilter(kind, age)).getJSONArray("results");
                     int taken = 0;
                     int checkedRatings = 0;
@@ -232,7 +233,7 @@ final class Tmdb {
             try (FileOutputStream w = new FileOutputStream(cache)) {
                 w.write(new JSONObject().put("picks", out).toString().getBytes(StandardCharsets.UTF_8));
             }
-            c.getSharedPreferences("tmdb", Context.MODE_PRIVATE).edit().putString("apps" + age, apps).apply();
+            c.getSharedPreferences("tmdb", Context.MODE_PRIVATE).edit().putString("apps" + age + (L10n.isEnglish(c) ? "_en" : "_pt"), apps).apply();
             File[] files = c.getFilesDir().listFiles();
             if (files != null) {
                 String keep = out.toString();
